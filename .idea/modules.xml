@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Linear_Equations_Solver.iml" filepath="$PROJECT_DIR$/.idea/modules/Linear_Equations_Solver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Linear Equations Solver/task/Linear_Equations_Solver.Linear_Equations_Solver-task.iml" filepath="$PROJECT_DIR$/.idea/modules/Linear Equations Solver/task/Linear_Equations_Solver.Linear_Equations_Solver-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Linear Equations Solver/task/Linear_Equations_Solver.Linear_Equations_Solver-task.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Linear Equations Solver/task/Linear_Equations_Solver.Linear_Equations_Solver-task.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Linear Equations Solver/task/Linear_Equations_Solver.Linear_Equations_Solver-task.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Linear Equations Solver/task/Linear_Equations_Solver.Linear_Equations_Solver-task.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/Linear_Equations_Solver.util.iml" filepath="$PROJECT_DIR$/.idea/modules/util/Linear_Equations_Solver.util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/Linear_Equations_Solver.util.main.iml" filepath="$PROJECT_DIR$/.idea/modules/util/Linear_Equations_Solver.util.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/Linear_Equations_Solver.util.test.iml" filepath="$PROJECT_DIR$/.idea/modules/util/Linear_Equations_Solver.util.test.iml" />
+    </modules>
+  </component>
+</project>

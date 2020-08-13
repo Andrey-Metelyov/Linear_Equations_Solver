@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":Linear_Equations_Solver-task" external.linked.project.path="$MODULE_DIR$/../../../../Linear Equations Solver/task" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="Linear_Equations_Solver" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task">
+      <excludeFolder url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/out" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

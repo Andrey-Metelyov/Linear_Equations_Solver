@@ -1,0 +1,5 @@
+# Project exclude paths
+/.gradle/
+/Linear Equations Solver/task/build/
+/Linear Equations Solver/task/out/
+/Linear Equations Solver/task/out/production/classes/
