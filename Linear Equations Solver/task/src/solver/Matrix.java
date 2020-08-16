@@ -168,7 +168,7 @@ public class Matrix implements Serializable {
                 sb.append(String.format("%d ", (int)getAt(i, j)));
 //                sb.append(String.format("%.3f ", getAt(i, j)));
             }
-            sb.append("\n");
+            sb.append(System.lineSeparator());
         }
         return sb.toString();
     }

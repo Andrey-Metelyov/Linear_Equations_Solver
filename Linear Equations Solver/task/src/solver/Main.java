@@ -34,7 +34,9 @@ public class Main {
         }
         sb.append(")");
         System.out.println("The solution is: " + sb.toString());
-        writer.write(result.toString());
+        for (int i = 0; i < result.getRows(); i++) {
+            writer.write(result.getAt(i, 0) + System.lineSeparator());
+        }
         writer.close();
         System.out.println("Saved to file " + parameters.get("-out"));
     }
