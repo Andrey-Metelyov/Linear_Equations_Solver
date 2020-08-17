@@ -276,10 +276,16 @@ files:
 - name: output.txt
   visible: true
   learner_created: true
+- name: src/solver/MatrixRow.java
+  visible: true
+  learner_created: true
+- name: src/solver/LinearEquation.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/40/stages/211/implement
 status: Solved
 feedback:
   message: Congratulations! Continue on <a href="https://hyperskill.org/projects/40/stages/211/implement">JetBrains
     Academy</a>
   time: Sun, 16 Aug 2020 23:53:58 UTC
-record: -1
+record: 3

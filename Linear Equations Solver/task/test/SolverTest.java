@@ -3,7 +3,6 @@ import org.hyperskill.hstest.stage.StageTest;
 import org.hyperskill.hstest.testcase.TestCase;
 import solver.Main;
 
-import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,11 +16,18 @@ class TestClue {
     String feedback;
     String outFile;
     ArrayList<Double> answers;
+    String answer;
 
     TestClue(String feedback, String outFile, Double[] answers) {
         this.feedback = feedback;
         this.outFile = outFile;
         this.answers = new ArrayList<>(Arrays.asList(answers));
+    }
+
+    TestClue(String feedback, String outFile, String answer) {
+        this.feedback = feedback;
+        this.outFile = outFile;
+        this.answer = answer;
     }
 }
 
@@ -32,17 +38,20 @@ public class SolverTest extends StageTest<TestClue> {
         super(Main.class);
     }
 
+    static String noSolutions = "No solutions";
+    static String infiniteSolutions = "Infinitely many solutions";
+
     @Override
     public List<TestCase<TestClue>> generate() {
         return List.of(
             new TestCase<TestClue>()
                 .setAttach(new TestClue(
-                    "Test exactly like in the example",
+                    "",
                     "out.txt",
                     new Double[]{1d, 2d, 3d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "3\n" +
+                "3 3\n" +
                     "1 1 2 9\n" +
                     "2 4 -3 1\n" +
                     "3 6 -5 0"),
@@ -54,7 +63,7 @@ public class SolverTest extends StageTest<TestClue> {
                     new Double[]{1d, 1d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "2\n" +
+                "2 2\n" +
                     "1 0 1\n" +
                     "0 1 1"),
 
@@ -65,7 +74,7 @@ public class SolverTest extends StageTest<TestClue> {
                     new Double[]{1d, 1d}))
                 .addArguments(new String[]{"-in", "input.txt", "-out", "out.txt"})
                 .addFile("input.txt",
-                "2\n" +
+                "2 2\n" +
                     "1 0 1\n" +
                     "0 1 1"),
 
@@ -76,7 +85,7 @@ public class SolverTest extends StageTest<TestClue> {
                     new Double[]{1d, 1d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "output.txt"})
                 .addFile("in.txt",
-                "2\n" +
+                "2 2\n" +
                     "1 0 1\n" +
                     "0 1 1"),
 
@@ -87,7 +96,7 @@ public class SolverTest extends StageTest<TestClue> {
                     new Double[]{2d, 2d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "2\n" +
+                "2 2\n" +
                     "1 0 2\n" +
                     "0 1 2"),
 
@@ -98,7 +107,7 @@ public class SolverTest extends StageTest<TestClue> {
                     new Double[]{1d, 1d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "2\n" +
+                "2 2\n" +
                     "2 0 2\n" +
                     "0 2 2"),
 
@@ -109,7 +118,7 @@ public class SolverTest extends StageTest<TestClue> {
                     new Double[]{-1d, 1d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "2\n" +
+                "2 2\n" +
                     "1 2 1\n" +
                     "3 4 1"),
 
@@ -140,7 +149,7 @@ public class SolverTest extends StageTest<TestClue> {
                         1.5399}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "20\n" +
+                "20 20\n" +
                     "26 90 17 67 68 9 60 38 37 38 76 14 33 94 88 58 99 84 9 45 18\n" +
                     "37 34 20 53 10 61 75 49 91 84 55 84 84 81 30 22 42 76 33 27 2\n" +
                     "99 69 63 57 39 45 33 43 99 26 25 24 80 91 62 90 54 77 88 32 94\n" +
@@ -189,7 +198,7 @@ public class SolverTest extends StageTest<TestClue> {
                         0.4716d}))
                 .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
                 .addFile("in.txt",
-                "20\n" +
+                "20 20\n" +
                     "0.11 0.62 0.28 0.94 0.53 0.94 0.06 1.0 0.61 0.45 0.03 0.79 0.87 0.32 0.66 0.5 0.14 0.82 0.44 0.13 0.43\n" +
                     "0.8 0.7 0.16 0.09 0.4 0.63 0.46 1.0 0.9 0.14 0.03 0.8 0.98 0.71 0.67 0.42 0.73 0.01 0.75 0.59 0.64\n" +
                     "0.99 0.01 0.45 0.85 0.17 0.14 0.58 0.27 0.96 0.52 0.74 0.89 0.72 0.93 0.22 0.9 0.41 0.78 0.56 0.67 0.84\n" +
@@ -209,7 +218,205 @@ public class SolverTest extends StageTest<TestClue> {
                     "0.83 0.72 0.84 0.41 0.53 0.53 0.67 0.09 0.49 0.42 0.88 0.14 0.09 0.02 0.49 0.29 0.29 0.17 0.08 0.9 0.45\n" +
                     "0.54 0.57 0.53 0.23 0.78 0.89 0.24 0.98 0.7 0.75 0.46 0.85 0.39 0.58 0.36 0.29 0.54 0.83 0.97 0.62 0.34\n" +
                     "0.3 0.64 0.71 0.07 0.03 0.76 0.25 0.34 0.97 0.93 0.48 0.57 0.98 0.33 0.4 0.18 0.01 0.81 0.38 0.87 0.95\n" +
-                    "0.25 0.7 0.07 0.4 0.67 0.84 0.12 0.43 0.61 0.7 0.89 0.88 0.48 0.14 0.32 0.98 0.15 0.87 0.34 0.81 0.37")
+                    "0.25 0.7 0.07 0.4 0.67 0.84 0.12 0.43 0.61 0.7 0.89 0.88 0.48 0.14 0.32 0.98 0.15 0.87 0.34 0.81 0.37"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "Check is the first element is zero",
+                    "out.txt",
+                    new Double[]{1d, 1d}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "2 2\n" +
+                    "0 1 1\n" +
+                    "1 0 1"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "",
+                    "out.txt",
+                    new Double[]{2d, 1d}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "2 2\n" +
+                    "0 1 1\n" +
+                    "1 0 2"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "",
+                    "out.txt",
+                    new Double[]{
+                        -0.5175d,
+                        -0.1523d,
+                        0.7669d,
+                        2.0115d,
+                        0.0958d,
+                        0.2849d,}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "6 6\n" +
+                    "2 6 1 3 9 1 6\n" +
+                    "9 2 4 3 6 1 5\n" +
+                    "6 5 9 1 4 2 6\n" +
+                    "4 1 1 2 9 2 4\n" +
+                    "5 4 6 2 3 1 6\n" +
+                    "3 5 4 1 7 9 6"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "",
+                    "out.txt",
+                    new Double[]{
+                        0.241,
+                        0.5984,
+                        0.2851,
+                        0.1325,
+                        0.1446,
+                        0.4257,}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "6 6\n" +
+                    "0 6 1 3 9 1 6\n" +
+                    "9 0 4 3 6 1 5\n" +
+                    "6 5 0 1 4 2 6\n" +
+                    "4 1 1 0 9 2 4\n" +
+                    "5 4 6 2 0 1 6\n" +
+                    "3 5 4 1 7 0 6"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "",
+                    "out.txt",
+                    new Double[]{
+                        -65.8154,
+                        13.0615,
+                        -4.4,
+                        2.6154,
+                        -0.9231,
+                        3.5385,}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "6 6\n" +
+                    "1 6 1 1 9 1 6\n" +
+                    "0 1 4 3 2 1 5\n" +
+                    "0 0 0 1 4 2 6\n" +
+                    "0 0 0 2 9 2 4\n" +
+                    "0 0 0 2 3 1 6\n" +
+                    "0 0 5 1 7 9 6"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "",
+                    "out.txt",
+                    new Double[]{
+                        -50.381,
+                        10.6508,
+                        -2.0794,
+                        0.5556,
+                        -1d,
+                        3d,}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "6 6\n" +
+                    "1 6 1 1 9 1 6\n" +
+                    "0 1 4 3 2 1 5\n" +
+                    "0 0 0 0 0 2 6\n" +
+                    "0 0 0 0 2 2 4\n" +
+                    "0 0 0 9 2 1 6\n" +
+                    "0 0 7 1 7 9 6"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "Test exactly like in the example",
+                    "out.txt",
+                    noSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "3 4\n" +
+                    "0 1 2 9\n" +
+                    "0 1 3 1\n" +
+                    "1 0 6 0\n" +
+                    "2 0 2 0"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "There are 4 rows, 3 columns, and a single solution",
+                    "out.txt",
+                    new Double[]{
+                        8d,
+                        1d,
+                        0d,}))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "3 4\n" +
+                    "1 1 2 9\n" +
+                    "0 1 3 1\n" +
+                    "0 0 6 0\n" +
+                    "0 0 0 0"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "There are 4 rows, 3 columns, and no solutions",
+                    "out.txt",
+                    noSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "3 4\n" +
+                    "1 1 2 9\n" +
+                    "0 1 3 1\n" +
+                    "0 0 6 0\n" +
+                    "0 0 0 7"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "There are 4 rows, 3 columns, and infinite solutions",
+                    "out.txt",
+                    infiniteSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "3 4\n" +
+                    "1 1 2 9\n" +
+                    "0 1 3 1\n" +
+                    "0 2 6 2\n" +
+                    "0 0 0 0"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "There are 3 rows, 4 columns, and no solutions",
+                    "out.txt",
+                    noSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "4 3\n" +
+                    "1 1 2 9 7\n" +
+                    "0 1 3 1 2\n" +
+                    "0 2 6 2 9"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "There are 3 rows, 4 columns, and infinite solutions",
+                    "out.txt",
+                    infiniteSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "4 3\n" +
+                    "1 1 2 9 7\n" +
+                    "0 1 3 1 2\n" +
+                    "0 2 6 3 9"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "There are 3 rows, 4 columns, and no solutions",
+                    "out.txt",
+                    noSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "4 3\n" +
+                    "1 0 0 0 1\n" +
+                    "0 0 0 0 0\n" +
+                    "1 0 0 0 0")
+
         );
     }
 
@@ -217,6 +424,25 @@ public class SolverTest extends StageTest<TestClue> {
     public CheckResult check(String reply, TestClue clue) {
         try {
             reply = readFile(clue.outFile);
+
+            if (reply.isEmpty()) {
+                return new CheckResult(false,
+                    "File is empty or cannot be opened. " +
+                        "Did you close the file in your program?");
+            }
+
+            if (clue.answers == null) {
+                clue.answer = clue.answer.strip().toLowerCase();
+                reply = reply.strip().toLowerCase();
+                return new CheckResult(reply.equals(clue.answer), clue.feedback);
+            }
+
+            if (reply.equalsIgnoreCase(noSolutions) ||
+                reply.equalsIgnoreCase(infiniteSolutions)) {
+                return new CheckResult(false,
+                    "There is a single solution but your program prints " +
+                        "\"" + reply + "\"");
+            }
 
             double[] actual =
                 Arrays
@@ -245,7 +471,7 @@ public class SolverTest extends StageTest<TestClue> {
         catch (NumberFormatException ex) {
             return new CheckResult(false,
                 "Numbers should be written in file on " +
-                        "separate lines without any additional symbols");
+                    "separate lines without any additional symbols");
         }
     }
 }
