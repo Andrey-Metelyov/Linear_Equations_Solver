@@ -40,10 +40,10 @@ public class Main {
 //        }
         double[] result = solve(rows);
         StringBuilder sb = new StringBuilder();
-        sb.append("(" + result[0]);
+        sb.append("(").append(result[0]);
         writer.write(result[0] + System.lineSeparator());
         for (int i = 1; i < result.length; i++) {
-            sb.append(", " + result[i]);
+            sb.append(", ").append(result[i]);
             writer.write(result[i] + System.lineSeparator());
         }
         sb.append(")");
@@ -54,37 +54,51 @@ public class Main {
 
     private static double[] solve(MatrixRow[] rows) {
         LinearEquation le = new LinearEquation(rows);
-        System.out.println(le.toString());
+        System.out.println(le);
 
         for (int i = 0; i < rows.length; i++) {
-//            MatrixRow line = le.getRow(i);
-            if (le.getElement(i, i) != 1.0) {
-                System.out.printf("%.2f * R%d -> R%d\n", 1.0 / le.getElement(i, i), i + 1, i + 1);
-                le.multiplyRow(i, 1.0 / le.getElement(i, i));
+            double element = le.getElement(i, i);
+            if (element == 0.0) {
+                for (int j = i + 1; j < rows.length; j++) {
+                    if (le.getElement(j, i) != 0) {
+                        System.out.printf("R%d <-> R%d\n", i + 1, j + 1);
+                        le.swapRows(i, j);
+                        element = le.getElement(i, i);
+                        break;
+                    }
+                }
+                if (element == 0) {
+                    for (int j = i + 1; j < le.getRow(i).size(); j++) {
+                        if (le.getElement(i, j) != 0) {
+                            System.out.printf("C%d <-> C%d\n", i + 1, j + 1);
+                            le.swapColumns(i, j);
+                            element = le.getElement(i, i);
+                            break;
+                        }
+                    }
+                    if (element == 0) {
+                        System.out.println("No solutions");
+                        break;
+                    }
+                }
+            } else if (element != 1.0) {
+                System.out.printf("%.2f * R%d -> R%d\n", 1.0 / element, i + 1, i + 1);
+                le.multiplyRow(i, 1.0 / element);
             }
             System.out.println(le.toString());
             for (int j = i + 1; j < rows.length; j++) {
-//                double koef = array[j][i];
-//                double koef = le.getElement(j, i);
-                System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i), i + 1, j + 1, j + 1);
-                le.addRowWithCoef(j, i, -le.getElement(j, i));
-//                for (int k = 0; k < array[j].length; k++) {
-//                    array[j][k] -= line[k] * koef;
-//                }
-                System.out.println(le.toString());
-//                showMatrix(array);
+                if (le.getElement(j, i) != 0) {
+                    System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i), i + 1, j + 1, j + 1);
+                    le.addRowWithCoef(j, i, -le.getElement(j, i));
+                    System.out.println(le);
+                }
             }
-//            showMatrix(array);
         }
         for (int i = rows.length - 2; i >= 0; i--) {
             for (int j = i; j >= 0; j--) {
-//                double koef = array[j][i + 1];
                 System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i + 1), i + 2, j + 1, j + 1);
                 le.addRowWithCoef(j, i + 1, -le.getElement(j, i + 1));
                 System.out.println(le);
-//                array[j][i + 1] = 0.0;
-//                array[j][array[j].length - 1] -= koef * array[i + 1][array[i + 1].length - 1];
-//                showMatrix(array);
             }
         }
 
@@ -151,9 +165,6 @@ public class Main {
             }
             System.out.println();
         }
-    }
-
-    private static void menu(String[] args) throws IOException {
     }
 
     private static Map<String, String> parseParameters(String[] args) {
