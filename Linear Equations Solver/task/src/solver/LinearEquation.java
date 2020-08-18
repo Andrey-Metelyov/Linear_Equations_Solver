@@ -33,18 +33,30 @@ public class LinearEquation {
         return result;
     }
 
+    public double[] getLastColumn() {
+        double[] result = new double[rows.length];
+        for (int i = 0; i < rows.length; i++) {
+            result[i] = rows[i].get(rows[i].size() - 1);
+        }
+        return result;
+    }
+
     public void multiplyRow(int row, double value) {
         rows[row].multiply(value);
     }
 
-    public void addRowsWithCoef(int row1, int row2, double coef) {
-        rows[row1].add(rows[row2].multiply(coef));
+    public void addRowWithCoef(int rowToWhichAdd, int rowToBeAdded, double coef) {
+        rows[rowToWhichAdd].add(rows[rowToBeAdded].multiplied(coef));
+    }
+
+    public MatrixRow getRow(int i) {
+        return rows[i];
     }
 
     @Override
     public String toString() {
         return "LinearEquation{" +
-                "rows=" + Arrays.toString(rows) +
+                "rows=" + System.lineSeparator() + Arrays.toString(rows) +
                 '}';
     }
 
@@ -56,13 +68,25 @@ public class LinearEquation {
         };
         LinearEquation eq = new LinearEquation(rows);
         System.out.println(eq);
-        eq.swapRows(0, 2);
+        eq.addRowWithCoef(1, 0, -eq.getElement(1, 0));
+        eq.addRowWithCoef(2, 0, -eq.getElement(2, 0));
         System.out.println(eq);
-        eq.swapColumns(1, 2);
+        eq.multiplyRow(1, 1.0 / eq.getElement(1, 1));
         System.out.println(eq);
-        eq.multiplyRow(1, 0.5);
+        eq.addRowWithCoef(2, 1, -eq.getElement(2, 1));
         System.out.println(eq);
-        eq.addRowsWithCoef(1, 0, -7);
+        eq.addRowWithCoef(2, 1, -eq.getElement(2, 1));
         System.out.println(eq);
+        eq.addRowWithCoef(0, 1, -eq.getElement(0, 1));
+        System.out.println(eq);
+        System.out.println(Arrays.toString(eq.getColumn(2)));
+
+//        eq.swapRows(0, 2);
+//        System.out.println(eq);
+//        eq.swapColumns(1, 2);
+//        System.out.println(eq);
+//        eq.multiplyRow(1, 0.5);
+//        System.out.println(eq);
     }
+
 }

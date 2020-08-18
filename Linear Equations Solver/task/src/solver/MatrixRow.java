@@ -18,11 +18,23 @@ public class MatrixRow {
         return this;
     }
 
+    public int size() {
+        return elements.length;
+    }
+
     public MatrixRow multiply(double value) {
         for (int i = 0; i < elements.length; i++) {
             elements[i] *= value;
         }
         return this;
+    }
+
+    public MatrixRow multiplied(double value) {
+        MatrixRow result = new MatrixRow(this.elements);
+        for (int i = 0; i < elements.length; i++) {
+            result.elements[i] *= value;
+        }
+        return result;
     }
 
     public MatrixRow swapElements(int col1, int col2) {
@@ -41,8 +53,6 @@ public class MatrixRow {
 
     @Override
     public String toString() {
-        return "MatrixRow{" +
-                "elements=" + Arrays.toString(elements) +
-                '}';
+        return Arrays.toString(elements) + System.lineSeparator();
     }
 }

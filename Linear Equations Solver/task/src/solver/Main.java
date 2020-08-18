@@ -17,28 +17,78 @@ public class Main {
         reader = new FileReader(parameters.get("-in"));
         Scanner scanner = new Scanner(reader);
         int lines = Integer.parseInt(scanner.nextLine());
-        Matrix matrix = new Matrix(lines, lines + 1);
+        MatrixRow[] rows = new MatrixRow[lines];
+//        Matrix matrix = new Matrix(lines, lines + 1);
         for (int i = 0; i < lines; i++) {
             double[] line = Arrays.stream(scanner.nextLine().split("\\s+"))
                     .mapToDouble(Double::parseDouble)
                     .toArray();
-            matrix.setRow(i, line);
+//            matrix.setRow(i, line);
+            rows[i] = new MatrixRow(line);
         }
         reader.close();
         System.out.println("Start solving the equation.");
-        Matrix result = solve(matrix);
+//        Matrix result = solve(matrix);
+//        sb.append("(" + result.getAt(0, 0));
+//        for (int i = 1; i < result.getRows(); i++) {
+//            sb.append(", " + result.getAt(i, 0));
+//        }
+//        sb.append(")");
+//        System.out.println("The solution is: " + sb.toString());
+//        for (int i = 0; i < result.getRows(); i++) {
+//            writer.write(result.getAt(i, 0) + System.lineSeparator());
+//        }
+        double[] result = solve(rows);
         StringBuilder sb = new StringBuilder();
-        sb.append("(" + result.getAt(0, 0));
-        for (int i = 1; i < result.getRows(); i++) {
-            sb.append(", " + result.getAt(i, 0));
+        sb.append("(" + result[0]);
+        writer.write(result[0] + System.lineSeparator());
+        for (int i = 1; i < result.length; i++) {
+            sb.append(", " + result[i]);
+            writer.write(result[i] + System.lineSeparator());
         }
         sb.append(")");
         System.out.println("The solution is: " + sb.toString());
-        for (int i = 0; i < result.getRows(); i++) {
-            writer.write(result.getAt(i, 0) + System.lineSeparator());
-        }
         writer.close();
         System.out.println("Saved to file " + parameters.get("-out"));
+    }
+
+    private static double[] solve(MatrixRow[] rows) {
+        LinearEquation le = new LinearEquation(rows);
+        System.out.println(le.toString());
+
+        for (int i = 0; i < rows.length; i++) {
+//            MatrixRow line = le.getRow(i);
+            if (le.getElement(i, i) != 1.0) {
+                System.out.printf("%.2f * R%d -> R%d\n", 1.0 / le.getElement(i, i), i + 1, i + 1);
+                le.multiplyRow(i, 1.0 / le.getElement(i, i));
+            }
+            System.out.println(le.toString());
+            for (int j = i + 1; j < rows.length; j++) {
+//                double koef = array[j][i];
+//                double koef = le.getElement(j, i);
+                System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i), i + 1, j + 1, j + 1);
+                le.addRowWithCoef(j, i, -le.getElement(j, i));
+//                for (int k = 0; k < array[j].length; k++) {
+//                    array[j][k] -= line[k] * koef;
+//                }
+                System.out.println(le.toString());
+//                showMatrix(array);
+            }
+//            showMatrix(array);
+        }
+        for (int i = rows.length - 2; i >= 0; i--) {
+            for (int j = i; j >= 0; j--) {
+//                double koef = array[j][i + 1];
+                System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i + 1), i + 2, j + 1, j + 1);
+                le.addRowWithCoef(j, i + 1, -le.getElement(j, i + 1));
+                System.out.println(le);
+//                array[j][i + 1] = 0.0;
+//                array[j][array[j].length - 1] -= koef * array[i + 1][array[i + 1].length - 1];
+//                showMatrix(array);
+            }
+        }
+
+        return le.getLastColumn();
     }
 
     private static Matrix solve(Matrix matrix) {
