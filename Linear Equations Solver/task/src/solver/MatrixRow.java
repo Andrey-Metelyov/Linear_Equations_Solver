@@ -55,4 +55,13 @@ public class MatrixRow {
     public String toString() {
         return Arrays.toString(elements) + System.lineSeparator();
     }
+
+    public boolean nonZero() {
+        for (int i = 0; i < elements.length; i++) {
+            if (elements[i] != 0.0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

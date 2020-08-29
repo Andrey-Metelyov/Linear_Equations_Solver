@@ -89,4 +89,18 @@ public class LinearEquation {
 //        System.out.println(eq);
     }
 
+    public boolean isBadRow(int j) {
+        if (rows[j].get(rows[j].size() - 1) != 0.0) {
+            boolean allZeroes = true;
+            for (int i = 0; i < rows[j].size() - 1; i++) {
+                if (rows[j].get(i) != 0.0) {
+                    allZeroes = false;
+                    break;
+                }
+            }
+            return allZeroes;
+        } else {
+            return false;
+        }
+    }
 }
