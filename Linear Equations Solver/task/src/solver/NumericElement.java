@@ -1,36 +1,74 @@
 package solver;
 
-public interface NumericElement {
-    NumericElement add(NumericElement other);
-    NumericElement subtract(NumericElement other);
-    NumericElement multiply(NumericElement other);
-    NumericElement divide(NumericElement other);
+public interface NumericElement<T> {
+    T add(T other);
+    T subtract(T other);
+    T multiply(T other);
+    T divide(T other);
 }
 
-class DoubleElement implements NumericElement {
-    double value;
+class ComplexElement implements NumericElement<ComplexElement> {
+    private ComplexNumber value;
+
+    public ComplexElement(ComplexNumber value) {
+        this.value = value;
+    }
+
+    @Override
+    public ComplexElement add(ComplexElement other) {
+        return new ComplexElement(value.add(other.value));
+    }
+
+    @Override
+    public ComplexElement subtract(ComplexElement other) {
+        return new ComplexElement(value.subtract(other.value));
+    }
+
+    @Override
+    public ComplexElement multiply(ComplexElement other) {
+        return new ComplexElement(value.multiply(other.value));
+    }
+
+    @Override
+    public ComplexElement divide(ComplexElement other) {
+        return new ComplexElement(value.divide(other.value));
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+}
+
+class DoubleElement implements NumericElement<DoubleElement> {
+    private final double value;
 
     DoubleElement(double value) {
         this.value = value;
     }
 
     @Override
-    public NumericElement add(NumericElement other) {
-        return new DoubleElement(value + ((DoubleElement) other).value);
+    public DoubleElement add(DoubleElement other) {
+        return new DoubleElement(value + other.value);
     }
 
     @Override
-    public NumericElement subtract(NumericElement other) {
-        return new DoubleElement(value - ((DoubleElement) other).value);
+    public DoubleElement subtract(DoubleElement other) {
+        return new DoubleElement(value - other.value);
     }
 
     @Override
-    public NumericElement multiply(NumericElement other) {
-        return new DoubleElement(value * ((DoubleElement) other).value);
+    public DoubleElement multiply(DoubleElement other) {
+        return new DoubleElement(value * other.value);
     }
 
     @Override
-    public NumericElement divide(NumericElement other) {
-        return new DoubleElement(value / ((DoubleElement) other).value);
+    public DoubleElement divide(DoubleElement other) {
+        return new DoubleElement(value / other.value);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 }
