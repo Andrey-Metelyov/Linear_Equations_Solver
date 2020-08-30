@@ -1,8 +1,8 @@
 package solver;
 
 public class ComplexNumber {
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
 
     public ComplexNumber(double x, double y) {
         this.x = x;
@@ -14,8 +14,13 @@ public class ComplexNumber {
         this.y = other.y;
     }
 
-    public ComplexNumber plus(ComplexNumber other) {
+    public ComplexNumber add(ComplexNumber other) {
         return new ComplexNumber(this.x + other.x, this.y + other.y);
+    }
+
+
+    public ComplexNumber subtract(ComplexNumber other) {
+        return new ComplexNumber(this.x - other.x, this.y - other.y);
     }
 
     public ComplexNumber multiply(ComplexNumber other) {
