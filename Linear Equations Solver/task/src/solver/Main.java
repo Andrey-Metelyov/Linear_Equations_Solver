@@ -13,13 +13,20 @@ public class Main {
     private static FileReader reader;
     public static void main(String[] args) throws IOException {
         Map<String, String> parameters = parseParameters(args);
+        if (parameters.size() < 2) {
+            System.out.println("No parameters!");
+            return;
+        }
         writer = new FileWriter(parameters.get("-out"));
         reader = new FileReader(parameters.get("-in"));
         Scanner scanner = new Scanner(reader);
-        int lines = Integer.parseInt(scanner.nextLine());
-        MatrixRow[] rows = new MatrixRow[lines];
+        int variables = scanner.nextInt();
+        int equations = scanner.nextInt();
+        scanner.nextLine();
+//        int lines = Integer.parseInt(scanner.nextLine());
+        MatrixRow[] rows = new MatrixRow[equations];
 //        Matrix matrix = new Matrix(lines, lines + 1);
-        for (int i = 0; i < lines; i++) {
+        for (int i = 0; i < equations; i++) {
             double[] line = Arrays.stream(scanner.nextLine().split("\\s+"))
                     .mapToDouble(Double::parseDouble)
                     .toArray();
@@ -27,6 +34,8 @@ public class Main {
             rows[i] = new MatrixRow(line);
         }
         reader.close();
+        System.out.println("variables=" + variables);
+        System.out.println("equations=" + equations);
         System.out.println("Start solving the equation.");
 //        Matrix result = solve(matrix);
 //        sb.append("(" + result.getAt(0, 0));
@@ -38,27 +47,42 @@ public class Main {
 //        for (int i = 0; i < result.getRows(); i++) {
 //            writer.write(result.getAt(i, 0) + System.lineSeparator());
 //        }
-        double[] result = solve(rows);
+        LinearEquationResult linearEquationResult = solve(rows, variables, equations);
+        double[] result = linearEquationResult.result;
         StringBuilder sb = new StringBuilder();
-        sb.append("(").append(result[0]);
-        writer.write(result[0] + System.lineSeparator());
-        for (int i = 1; i < result.length; i++) {
-            sb.append(", ").append(result[i]);
-            writer.write(result[i] + System.lineSeparator());
+        if (linearEquationResult.solvingResult == LinearEquationResult.SolvingResult.ONE_SOLUTION) {
+            sb.append("(").append(result[0]);
+            writer.write(result[0] + System.lineSeparator());
+            for (int i = 1; i < variables; i++) {
+                sb.append(", ").append(result[i]);
+                writer.write(result[i] + System.lineSeparator());
+            }
+            sb.append(")");
+        } else if (linearEquationResult.solvingResult == LinearEquationResult.SolvingResult.NO_SOLUTIONS) {
+            sb.append("No solutions");
+            writer.write("No solutions");
+        } else {
+            sb.append("Infinitely many solutions");
+            writer.write("Infinitely many solutions");
         }
-        sb.append(")");
         System.out.println("The solution is: " + sb.toString());
         writer.close();
         System.out.println("Saved to file " + parameters.get("-out"));
     }
 
-    private static double[] solve(MatrixRow[] rows) {
+    private static LinearEquationResult solve(MatrixRow[] rows, int variables, int equations) {
         LinearEquation le = new LinearEquation(rows);
         System.out.println(le);
-
-        for (int i = 0; i < rows.length; i++) {
+//        if (equations < variables) {
+//            System.out.println("equations < variables");
+//            return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
+//        }
+        System.out.println("Rows manipulation:");
+        int max = Math.min(variables, equations);
+        for (int i = 0; i < max; i++) {
             double element = le.getElement(i, i);
             if (element == 0.0) {
+                // swap rows
                 for (int j = i + 1; j < rows.length; j++) {
                     if (le.getElement(j, i) != 0) {
                         System.out.printf("R%d <-> R%d\n", i + 1, j + 1);
@@ -68,7 +92,8 @@ public class Main {
                     }
                 }
                 if (element == 0) {
-                    for (int j = i + 1; j < le.getRow(i).size(); j++) {
+                    // swap columns
+                    for (int j = i + 1; j < le.getRow(i).size() - 1; j++) {
                         if (le.getElement(i, j) != 0) {
                             System.out.printf("C%d <-> C%d\n", i + 1, j + 1);
                             le.swapColumns(i, j);
@@ -77,32 +102,69 @@ public class Main {
                         }
                     }
                     if (element == 0) {
-                        System.out.println("No solutions");
-                        break;
+                        System.out.println(le);
+                        if (rows[i].nonZero()) {
+                            System.out.println("No solutions (1)");
+                            return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
+                        } else {
+                            System.out.println("Infinitely many solutions (1)");
+                            return new LinearEquationResult(LinearEquationResult.SolvingResult.INFINITELY_MANY_SOLUTIONS, null);
+                        }
                     }
                 }
-            } else if (element != 1.0) {
+            }
+            if (element != 1.0) {
                 System.out.printf("%.2f * R%d -> R%d\n", 1.0 / element, i + 1, i + 1);
                 le.multiplyRow(i, 1.0 / element);
             }
-            System.out.println(le.toString());
             for (int j = i + 1; j < rows.length; j++) {
                 if (le.getElement(j, i) != 0) {
-                    System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i), i + 1, j + 1, j + 1);
+                    System.out.printf("1. %.2f * R%d + R%d -> R%d\n", -le.getElement(j, i), i + 1, j + 1, j + 1);
                     le.addRowWithCoef(j, i, -le.getElement(j, i));
-                    System.out.println(le);
+                    if (le.isBadRow(j)) {
+                        return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
+                    }
+//                    System.out.println(le);
                 }
             }
+            System.out.println(le);
         }
-        for (int i = rows.length - 2; i >= 0; i--) {
-            for (int j = i; j >= 0; j--) {
-                System.out.printf("%.2f * R%d + R%d -> R%d\n", -le.getElement(j, i + 1), i + 2, j + 1, j + 1);
-                le.addRowWithCoef(j, i + 1, -le.getElement(j, i + 1));
-                System.out.println(le);
+
+        System.out.println(le);
+        for (int i = variables - 1; i < rows.length; i++) {
+            boolean allZeroes = true;
+            for (int j = 0; j < rows[i].size() - 1; j++) {
+                if (rows[i].get(j) != 0.0) {
+                    allZeroes = false;
+                    break;
+                }
+            }
+            if (allZeroes && rows[i].get(rows[i].size() - 1) != 0.0) {
+                System.out.println("No solutions (2)");
+                return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
             }
         }
 
-        return le.getLastColumn();
+        int nonZeroRows = 0;
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i].nonZero()) {
+                nonZeroRows++;
+            }
+        }
+        if (nonZeroRows < variables) {
+            System.out.println("Infinitely many solutions");
+            return new LinearEquationResult(LinearEquationResult.SolvingResult.INFINITELY_MANY_SOLUTIONS, null);
+        }
+
+        for (int i = rows.length - 2; i >= 0; i--) {
+            for (int j = i; j >= 0; j--) {
+                System.out.printf("2. %.2f * R%d + R%d -> R%d\n", -le.getElement(j, i + 1), i + 2, j + 1, j + 1);
+                le.addRowWithCoef(j, i + 1, -le.getElement(j, i + 1));
+//                System.out.println(le);
+            }
+        }
+        System.out.println(le);
+        return new LinearEquationResult(LinearEquationResult.SolvingResult.ONE_SOLUTION, le.getLastColumn());
     }
 
     private static Matrix solve(Matrix matrix) {

@@ -3,25 +3,140 @@ import org.hyperskill.hstest.stage.StageTest;
 import org.hyperskill.hstest.testcase.TestCase;
 import solver.Main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
-import static java.lang.Math.abs;
 import static org.hyperskill.hstest.common.FileUtils.readFile;
+
+
+class Complex {
+    public static final double EPSILON = 0.001;
+
+    public static Complex add(Complex a, Complex b) {
+        return new Complex(a.real + b.real, a.imag + b.imag);
+    }
+
+
+    public static Complex divide(Complex a, Complex b) {
+        final Complex bConjugate = b.conjugate();
+        final Complex a1 = Complex.multiply(a, bConjugate);
+        final Complex b1 = Complex.multiply(b, bConjugate);
+
+        return new Complex(a1.real / b1.real, a1.imag / b1.real);
+    }
+
+    public static Complex multiply(Complex a, Complex b) {
+        return new Complex(a.real * b.real - a.imag * b.imag, a.real * b.imag + a.imag * b.real);
+    }
+
+    final double real;
+    final double imag;
+
+    public Complex(double real, double imag) {
+        this.real = real;
+        this.imag = imag;
+    }
+
+    public Complex(String s) throws NumberFormatException {
+        final String[] strs = split(s);
+        System.out.println(strs[0] + " " + strs[1]);
+        if (strs[1].contains("i")) {
+            strs[1] = strs[1].replace("i", "1");
+        }
+        if (strs[1].equals("-")) {
+            strs[1] = "-1";
+        }
+        if (strs[1].equals("+")) {
+            strs[1] = "1";
+        }
+        real = Double.parseDouble(strs[0]);
+        imag = Double.parseDouble(strs[1]);
+    }
+
+    public Complex conjugate() {
+        return new Complex(real, -imag);
+    }
+
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+
+        if (!(other instanceof Complex)) {
+            return false;
+        }
+
+        Complex o = (Complex) other;
+        return Math.abs(o.imag - imag) < EPSILON && Math.abs(o.real - real) < EPSILON;
+    }
+
+    @Override
+    public String toString() {
+        final DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        final DecimalFormat realFormat = new DecimalFormat("0.####", symbols);
+        final DecimalFormat imagFormat = new DecimalFormat("0.####i", symbols);
+        if (Math.abs(imag) < EPSILON) {
+            return realFormat.format(real);
+        }
+        if (Math.abs(real) < EPSILON) {
+            return imagFormat.format(imag);
+        }
+        imagFormat.setPositivePrefix("+");
+        return String.format("%s%s", realFormat.format(real), imagFormat.format(imag));
+    }
+
+    private String[] split(String s) throws NumberFormatException {
+        if (s.equals("i")) {
+            return new String[]{"0", "1"};
+        }
+        if (s.equals("-i")) {
+            return new String[]{"0", "-1"};
+        }
+        String realString = "0";
+        String imagString = "0";
+        int i = 1;
+        for (; i < s.length(); ++i) {
+            if (s.charAt(i) == '+' || s.charAt(i) == '-') {
+                realString = s.substring(0, i);
+                imagString = s.substring(i, s.length() - 1);
+                if (s.charAt(s.length()-1) != 'i') {
+                    throw new NumberFormatException("can't parse complex");
+                }
+                break;
+            }
+            if (s.charAt(i) == 'i') {
+                if (i != s.length() - 1) {
+                    throw  new NumberFormatException("can't parse complex");
+                }
+                imagString = s.substring(0, i);
+                break;
+            }
+        }
+        if (i == s.length()) {
+            realString = s;
+        }
+        if (imagString.length() == 0) {
+            imagString = "1";
+        }
+        return new String[]{realString, imagString};
+    }
+}
 
 
 class TestClue {
 
     String feedback;
     String outFile;
-    ArrayList<Double> answers;
+    ArrayList<Complex> complexAnswers;
     String answer;
 
     TestClue(String feedback, String outFile, Double[] answers) {
-        this.feedback = feedback;
-        this.outFile = outFile;
-        this.answers = new ArrayList<>(Arrays.asList(answers));
+        this(feedback, outFile,
+            Arrays
+            .stream(answers)
+            .map(e -> new Complex(e, 0))
+            .toArray(Complex[]::new));
     }
 
     TestClue(String feedback, String outFile, String answer) {
@@ -29,12 +144,17 @@ class TestClue {
         this.outFile = outFile;
         this.answer = answer;
     }
+
+    TestClue(String feedback, String outFile, Complex[] answers) {
+        this.feedback = feedback;
+        this.outFile = outFile;
+        this.complexAnswers = new ArrayList<>(Arrays.asList(answers));
+    }
 }
 
 
 public class SolverTest extends StageTest<TestClue> {
-
-    public SolverTest() throws Exception {
+    public SolverTest() {
         super(Main.class);
     }
 
@@ -42,7 +162,7 @@ public class SolverTest extends StageTest<TestClue> {
     static String infiniteSolutions = "Infinitely many solutions";
 
     @Override
-    public List<TestCase<TestClue>> generate() {
+    public List<TestCase<TestClue>>  generate() {
         return List.of(
             new TestCase<TestClue>()
                 .setAttach(new TestClue(
@@ -415,7 +535,60 @@ public class SolverTest extends StageTest<TestClue> {
                 "4 3\n" +
                     "1 0 0 0 1\n" +
                     "0 0 0 0 0\n" +
-                    "1 0 0 0 0")
+                    "1 0 0 0 0"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "This is the first test with complex numbers. " +
+                        "Maybe output format is wrong?",
+                    "out.txt",
+                    new Complex[]{
+                        new Complex(0, -1),
+                        new Complex(0, -1),
+                    }))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "2 2\n" +
+                    "i 0 1\n" +
+                    "0 i 1"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "This test is about complex numbers",
+                    "out.txt",
+                    noSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "2 2\n" +
+                    "i -i i\n" +
+                    "-i i i"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "This test is about complex numbers",
+                    "out.txt",
+                    infiniteSolutions))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "2 2\n" +
+                    "i -i i\n" +
+                    "-i i -i"),
+
+            new TestCase<TestClue>()
+                .setAttach(new TestClue(
+                    "This test is about complex numbers",
+                    "out.txt",
+                    new Complex[]{
+                        new Complex(-0.0879, 0.1686),
+                        new Complex(-0.0707, -0.0877),
+                        new Complex(0.6987, 0.8726),
+                    }))
+                .addArguments(new String[]{"-in", "in.txt", "-out", "out.txt"})
+                .addFile("in.txt",
+                "3 3\n" +
+                    "1+i 2+6i 7-8i 12\n" +
+                    "-7i 123 12+i i\n" +
+                    "11-11i 12+i -i 1+i")
 
         );
     }
@@ -431,37 +604,35 @@ public class SolverTest extends StageTest<TestClue> {
                         "Did you close the file in your program?");
             }
 
-            if (clue.answers == null) {
-                clue.answer = clue.answer.strip().toLowerCase();
+            if (clue.complexAnswers == null) {
                 reply = reply.strip().toLowerCase();
+                clue.answer = clue.answer.strip().toLowerCase();
                 return new CheckResult(reply.equals(clue.answer), clue.feedback);
             }
 
-            if (reply.equalsIgnoreCase(noSolutions) ||
-                reply.equalsIgnoreCase(infiniteSolutions)) {
+            if (reply.strip().toLowerCase().equals(noSolutions) ||
+                reply.strip().toLowerCase().equals(infiniteSolutions)) {
                 return new CheckResult(false,
                     "There is a single solution but your program prints " +
                         "\"" + reply + "\"");
             }
 
-            double[] actual =
+            Complex[] actual =
                 Arrays
                     .stream(reply.split("\n"))
                     .map(String::strip)
-                    .mapToDouble(Double::parseDouble)
-                    .toArray();
+                    .map(Complex::new)
+                    .toArray(Complex[]::new);
 
-            double[] expected =
-                clue.answers.stream()
-                    .mapToDouble(e -> e)
-                    .toArray();
+            Complex[] expected =
+                clue.complexAnswers.toArray(Complex[]::new);
 
             if (actual.length != expected.length) {
                 return new CheckResult(false, clue.feedback);
             }
 
             for (int i = 0; i < actual.length; i++) {
-                if (abs(actual[i] - expected[i]) > 0.001) {
+                if (!actual[i].equals(expected[i])) {
                     return new CheckResult(false, clue.feedback);
                 }
             }
