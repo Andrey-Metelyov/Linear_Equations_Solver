@@ -1,20 +1,20 @@
 <h2>Description</h2>
 
-<p>Let's solve the problem with one additional variable and one additional equation. The variables would be <span class="math-tex">\(x\)</span> and <span class="math-tex">\(y\)</span>. The general form of this equation look like this:</p>
+<p>Let's solve the problem with one additional variable and one additional equation. The variables would be <span class="math-tex">\(x\)</span> and <span class="math-tex">\(y\)</span>. In general this equation would look like this:</p>
 
 <p><span class="math-tex">\(\begin{cases} ax+by=c \\ dx + ey = f \end{cases}\)</span></p>
 
-<p>Where <span class="math-tex">\(a, b, c, d, e, f\)</span> are numbers. The general algorithm is to separate the variables so the first variable would be solved on the first line and the second variable would be solved on the second line.</p>
+<p>Where <span class="math-tex">\(a, b, c, d, e, f\)</span> are numbers. The general algorithm is to separate the variables so that the first variable is solved in the first line and the second variable is solved in the second line.</p>
 
-<p>The main concept here is to subtract rows. You already know how to subtract numbers and subtraction of rows is not much different. Below is an example in which we subtract the first row from the second one.</p>
+<p>The main concept here is to subtract rows. You already know how to subtract numbers and subtraction of rows is pretty similar. Below is an example in which we subtract the first row from the second one.</p>
 
 <p><span class="math-tex">\(\begin{cases} ax+by = c \\ dx - ax + ey - by = f - c \end{cases}\)</span></p>
 
-<p>As you can see, we subtract <span class="math-tex">\(ax+by\)</span> from the left side of the second equation and also subtract <span class="math-tex">\(c\)</span> from the right side of an equation. Since we subtracted the equal amounts from both sides, the equation stays correct. You also can simplify this as shown below:</p>
+<p>As you can see, we subtract <span class="math-tex">\(ax+by\)</span> from the left side of the second equation and also subtract <span class="math-tex">\(c\)</span> from the right side that equation. Since we subtracted equal amounts from both sides, the equation remains correct. You also can simplify this as shown below:</p>
 
 <p><span class="math-tex">\(\begin{cases} ax+by = c \\ (d-a)x + (e-b)y = f - c \end{cases}\)</span></p>
 
-<p>But the real usefulness becomes after you realize that you can subtract only a part of an equation. Let's subtract from the second equation the first equation multiplied by <span class="math-tex">\(d / a\)</span>.</p>
+<p>However, this all comes together when you realize you can subtract only a part of an equation. Let's subtract the first equation multiplied by <span class="math-tex">\(d / a\)</span> from the second equation.</p>
 
 <p><span class="math-tex">\(\begin{cases} ax+by = c \\ (d-a * d/a)x + (e-b * d/a)y = f - c*d/a \end{cases}\)</span></p>
 

@@ -2,30 +2,30 @@
 
 <p>This stage is devoted to various special cases of the algorithm.</p>
 
-<p>Firstly, look at the first stage of the algorithm. It says that you should change the first row in a way that the first element of the row would be equal to 1. But what if the first element of the row is 0? Any multiplication of the row never let the first element of the row be equal to 1 because it would always be 0.</p>
+<p>Firstly, let's take a ook at the first stage of the algorithm. In it you should change the first row in a way that the first element of the row is equal to 1. But what if the first element of the row is 0? Any multiplications of such row would never produce the  first element equal to 1 because it would always be 0.</p>
 
 <p><span class="math-tex">\(\begin{cases} \begin{aligned} 0 &amp; + a_{12}x_2+... +a_{1n}x_n = b_1 \\ a_{21}x_1 &amp; + a_{22}x_2 +... + a_{2n}x_n = b_2 \\ &amp;... \\ a_{n1}x_1 &amp; + a_{n2}x_2 +... + a_{nn}x_n = b_n \\ \end{aligned} \end{cases}\)</span></p>
 
 <p>Because of that, you need to modify the algorithm. All rules will follow the example of a system of linear equations. The question marks next to the coefficients mean any value. The coefficients highlighted in red mean the ones mentioned in the rule.</p>
 
-<p>1. Before the scaling the current row you should check if the corresponding element of the row is not equal to 0.<br>
+<p>1. Before scaling the current row you should check if the corresponding element of the row isn't 0.<br>
 <span class="math-tex">\(\begin{cases} 1x_1 + \&gt;\&gt;?x_2 +?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2 +?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +\red?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ \end{cases}\)</span></p>
 
-<p>2. If the coefficient is zero, the program should look for a non-zero coefficient under this coefficient. If such a coefficient is found in some row, you should swap this row with the current one. In the example below, rows 3 and 5 have been swapped.<br>
+<p>2. If the coefficient is zero, the program should look for a non-zero coefficient under this coefficient. If such a coefficient is found in some other row, you should swap that row with the current one. In the example below, rows 3 and 5 have been swapped.<br>
 <span class="math-tex">\(\begin{cases} 1x_1 + \&gt;\&gt;?x_2 +\&gt;\&gt;?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2 +\&gt;\&gt;?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +\&gt;\&gt;\red?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +\&gt;\&gt;\red?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ \end{cases}\)</span><br>
 <br>
 <span class="math-tex">\(\begin{cases} 1x_1 + \&gt;\&gt;?x_2 +\&gt;\&gt;?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2 +\&gt;\&gt;?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2\ +\ ?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 + \green 5x_3 + ?x_4 + ?x_5 = \&gt; ? \\ \end{cases}\)</span><br>
 <br>
 <span class="math-tex">\(\begin{cases} 1x_1 + \&gt;\&gt;?x_2 +\&gt;\&gt;?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2 +\&gt;\&gt;?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 + \green 5x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2\ +\ ?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + ?x_4 + ?x_5 = \&gt; ? \\ \end{cases}\)</span></p>
 
-<p>3. If all the coefficients below the element are equal to zero, you should look for a non-zero coefficient to the right of the current one. If such a coefficient is found in some column, you should swap this column with the current one. Don't forget to remember this swap because after all, you need to swap them back to output the solutions in the right order. There could be a lot of swaps. In the example below, rows 3 and 4 have been swapped.<br>
+<p>3. If all the coefficients below the element are zero, you should look for a non-zero coefficient to the right of the current one. If such a coefficient is found in some other column, you should swap that column with the current one. Don't forget to swap because in the end you need to swap them back to output the solutions in the right order. There could be a lot of swaps. In the example below, rows 3 and 4 have been swapped.<br>
 <span class="math-tex">\(\begin{cases} 1x_1\ + \ ?x_2\ +\ ?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2\ + \ ?x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + \red?x_4 + \red?x_5 = \&gt; ? \\ 0x_1 + 0x_2 + 0x_3 + ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2+ 0x_3 + ?x_4 + ?x_5 = \&gt; ? \\ \end{cases}\)</span><br>
 <br>
 <span class="math-tex">\(\begin{cases} 1x_1\ + \ ?x_2\ +\ ?x_3\ +\ ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2\ + \ ?x_3\ +\ ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + \green7x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 + 0x_3\ +\ ?x_4 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2+ 0x_3\ +\ ?x_4 + ?x_5 = \&gt; ? \\ \end{cases}\)</span><br>
 <br>
 <span class="math-tex">\(\begin{cases} 1x_1\ + \ ?x_2\ +\ ?x_4\ +\ ?x_3 + ?x_5 = \&gt; ? \\ 0x_1 + 1x_2\ + \ ?x_4\ +\ ?x_3 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +\green7x_4 + 0x_3 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2\ +\ ?x_4+0x_3 + ?x_5 = \&gt; ? \\ 0x_1 + 0x_2\ +\ ?x_4+0x_3 + ?x_5 = \&gt; ? \\ \end{cases}\)</span></p>
 
-<p>4.  If all the coefficients below and to the right of the element are equal to zero, you should find the non-zero element in the whole bottom-left part of the linear system regarding the current element. If such a coefficient is found in some row and column, you should swap both row and column so that this non-zero element appear in place of the current element. Also, don't forget to remember the column's swap. In the example below, rows 3 and 4 and columns 3 and 5 have been swapped.<br>
+<p>4.  If all the coefficients below and to the right of the element are zero, you should find the non-zero element in the whole bottom-left part of the linear system. If such a coefficient is found in some other row and column, you should swap both those row and column so that this non-zero element is in place of the current element. Also, don't forget to remember the column's swap. In the example below, rows 3 and 4 and columns 3 and 5 have been swapped.<br>
 <span class="math-tex">\(\begin{cases} 1x_1\ + \ ?x_2\ +\ ?x_3\ +\ ?x_4\ +\ ?x_5 = \&gt; ? \\ 0x_1 + 1x_2\ + \ ?x_3\ +\ ?x_4\ +\ ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + 0x_4 + 0x_5 = \&gt; ? \\ 0x_1 + 0x_2 + 0x_3\ +\ \red?x_4\ +\ \red?x_5 = \&gt; ? \\ 0x_1 + 0x_2+ 0x_3\ +\ \red?x_4\ +\ \red?x_5 = \&gt; ? \\ \end{cases}\)</span><br>
 <br>
 <span class="math-tex">\(\begin{cases} 1x_1\ + \ ?x_2\ +\ ?x_3\ +\ ?x_4\ +\ ?x_5 = \&gt; ? \\ 0x_1 + 1x_2\ + \ ?x_3\ +\ ?x_4\ +\ ?x_5 = \&gt; ? \\ 0x_1 + 0x_2 +0x_3 + 0x_4 + 0x_5 = \&gt; ? \\ 0x_1 + 0x_2 + 0x_3\ +\ ?x_4 + \green3x_5 = \&gt; ? \\ 0x_1 + 0x_2+ 0x_3\ +\ ?x_4\ +\ ?x_5 = \&gt; ? \\ \end{cases}\)</span><br>
@@ -34,32 +34,31 @@
 <br>
 5. If there are no such elements in the whole bottom-left part of the linear system, you should end the first part of the algorithm.</p>
 
-<p>After all the manipulations in the first half of the algorithm, check the possibility of no solutions. It is possible when there is a all-zero row and a constant is not equal to zero. You can see the example below. In this case, a linear system contains a contradiction and therefore have no solutions. In this case, you can end the algorithm.</p>
+<p>After all the manipulations in the first half of the algorithm, check the possibility of no solutions. It is possible when there is an all-zero row and a constant is not equal to zero. You can see the example below. In this case, a linear system contains a contradiction and therefore has no solution. In this case, you can end the algorithm.</p>
 
 <p><span class="math-tex">\(\begin{cases} \begin{aligned} &amp;... \\ 0 &amp; + 0 +... + 0 = b_i,\&gt;\&gt; b_i \neq 0 \\ &amp;... \\ \end{aligned} \end{cases}\)</span></p>
 
-<p>Secondly, the linear system doesn't need to be an equal in amount variables and in amount of equations.</p>
+<p>Secondly, in the linear system the amount variables and amount of equations don't need to be equal.</p>
 
-<p>A number of significant equations are equal to the number of non-zero rows in the linear system. A number of significant variables are equal to the number of all columns in the linear system. After that, you can determine if the linear system has an infinite amount of solutions or a single one.<br>
+<p>A number of significant equations is equal to the number of non-zero rows in the linear system. A number of significant variables is equal to the number of all columns in the linear system. After that, you can determine if the linear system has an infinite amount of solutions or a single one.<br>
 <br>
 The following variants are possible:</p>
 
-<p>1. The number of significant equations is equal to the number of significant variables. There is only one solution, you can find it like in the previous stage. The possible examples are shown below:</p>
+<p>1. The number of significant equations is equal to the number of significant variables. There is only one solution, you can find it like in the previous stage. Possible examples are shown below:</p>
 
 <p><span class="math-tex">\(\left( \begin{array}{ccc|c} 1 &amp; 2 &amp; 3 &amp; 5 \\ 0 &amp; 1 &amp; 4 &amp; 6 \\ 0 &amp; 0 &amp; 1 &amp; 2 \\ \end{array} \right) , \&gt;\&gt;\&gt; \left( \begin{array}{ccc|c} 1 &amp; 3 &amp; 5 &amp; 7 \\ 0 &amp; 1 &amp; 2 &amp; 3 \\ 0 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{array} \right)\)</span></p>
 
-<p><br>
-2. The number of significant equations is less than the number of significant variables. There are infinitely many solutions. The possible examples are shown below:</p>
+<p>2. The number of significant equations is less than the number of significant variables. There is an infinite number of solutions. Possible examples are shown below:</p>
 
 <p><span class="math-tex">\(\left( \begin{array}{ccc|c} 1 &amp; 3 &amp; 4 &amp; 5 \\ 0 &amp; 1 &amp; 5 &amp; 5 \\ \end{array} \right) , \&gt;\&gt;\&gt; \left( \begin{array}{ccc|c} 1 &amp; 7 &amp; 0 &amp; 1 \\ 0 &amp; 1 &amp; 0 &amp; 5 \\ \end{array} \right)\)</span></p>
 
 <p><span class="math-tex">\(\left( \begin{array}{ccc|c} 1 &amp; 3 &amp; 5 &amp; 7 \\ 0 &amp; 1 &amp; 2 &amp; 3 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{array} \right) , \&gt;\&gt;\&gt; \left( \begin{array}{ccc|c} 1 &amp; 4 &amp; 0 &amp; 6 \\ 0 &amp; 1 &amp; 0 &amp; 2 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{array} \right)\)</span></p>
 
-<p>Note that there can't be a case in which the number of significant equations is greater than the number of significant variables because in this case there would be a contradiction we handled in the previous steps of the algorithm.</p>
+<p>Note that there can't be a case in which the number of significant equations is greater than the number of significant variables because in this case there would be a contradiction we've handled in the previous steps of the algorithm.</p>
 
 <p>In this stage you should write a program that handles all these nuances.</p>
 
-<p>Write to file only <code class="java">No solutions</code> or <code class="java">Infinitely many solutions</code> when this appears to happen. If there is a single solution you should write to file only <span class="math-tex">\(x_1, x_2, ... , x_n\)</span>, and every number should be on a separate line.</p>
+<p>Write to file only <code class="java">No solutions</code> or <code class="java">Infinitely many solutions</code> if that's the case. If there is a single solution you should write to file only <span class="math-tex">\(x_1, x_2, ... , x_n\)</span>, and every number should be on a separate line.</p>
 
 <p>Don't forget that input can contain floating-point numbers.</p>
 
@@ -67,7 +66,7 @@ The following variants are possible:</p>
 
 <h2>Example</h2>
 
-<p>Suppose you have a file named <code class="java">in.txt</code>. It contains the following. Note that the first line contains the number of variables and the number of equations. So, in the following example, there are three variables, <span class="math-tex">\(x_1\)</span>, <span class="math-tex">\(x_2\)</span>, <span class="math-tex">\(x_3\)</span> (remember, that last column is devoted to <span class="math-tex">\(b_i\)</span> ) and four equations (number of equations is the number of rows).</p>
+<p>Suppose you have a file named <code class="java">in.txt</code>. Its contents are shown below. Note that the first line contains the number of variables and the number of equations. So, in the following example, there are three variables, <span class="math-tex">\(x_1\)</span>, <span class="math-tex">\(x_2\)</span>, <span class="math-tex">\(x_3\)</span> (remember, that last column is devoted to <span class="math-tex">\(b_i\)</span> ) and four equations (number of equations is the number of rows).</p>
 
 <pre><code class="language-no-highlight">3 4
 0 1 2 9
@@ -92,6 +91,6 @@ R1 &lt;-&gt; R3
 No solutions
 Saved to file out.txt</code></pre>
 
-<p>And the file <code class="java">out.txt</code> should look like this.  </p>
+<p>The <code class="java">out.txt</code> file should look like this.</p>
 
 <pre><code class="language-no-highlight">No solutions</code></pre>

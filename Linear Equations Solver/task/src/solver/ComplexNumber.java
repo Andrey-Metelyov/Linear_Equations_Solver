@@ -14,10 +14,54 @@ public class ComplexNumber {
         this.y = other.y;
     }
 
+    public static ComplexNumber one() {
+        return new ComplexNumber(1.0, 0.0);
+    }
+
+    public static ComplexNumber zero() {
+        return new ComplexNumber(0.0, 0.0);
+    }
+
+    public static ComplexNumber parse(String string) {
+        double x = 0;
+        double y = 0;
+        int signPosition = Math.max(string.lastIndexOf("-"), string.lastIndexOf("+"));
+        if (signPosition == -1) {
+            // signs: just real or imaginary parts present
+            if (string.charAt(string.length() - 1) == 'i') {
+                x = 0.0;
+                String part = string.substring(0, string.length() - 1);
+                y = part.length() > 0 ? Double.parseDouble(part) : 1.0;
+            } else {
+                x = Double.parseDouble(string);;
+                y = 0.0;
+            }
+        } else {
+            if (signPosition != 0) {
+                x = Double.parseDouble(string.substring(0, signPosition));
+                String part = string.substring(signPosition, string.length() - 1);
+                y = part.length() > 1 ? Double.parseDouble(part) : part.equals("-") ? -1.0 : 1.0;
+            } else {
+                if (string.charAt(string.length() - 1) == 'i') {
+                    x = 0.0;
+                    String part = string.substring(0, string.length() - 1);
+                    y = part.isEmpty() ? 1.0 : part.equals("-") ? -1.0 : Double.parseDouble(part);
+                } else {
+                    x = Double.parseDouble(string);;
+                    y = 0.0;
+                }
+            }
+        }
+        return new ComplexNumber(x, y);
+    }
+
+    public ComplexNumber minus() {
+        return new ComplexNumber(-x, -y);
+    }
+
     public ComplexNumber add(ComplexNumber other) {
         return new ComplexNumber(this.x + other.x, this.y + other.y);
     }
-
 
     public ComplexNumber subtract(ComplexNumber other) {
         return new ComplexNumber(this.x - other.x, this.y - other.y);
@@ -48,6 +92,19 @@ public class ComplexNumber {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        ComplexNumber complexNumber = (ComplexNumber) obj;
+        return x == complexNumber.x && y == complexNumber.y;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 //        sb.append("(").append(x).append(", ").append(y).append(") = ");
@@ -72,8 +129,27 @@ public class ComplexNumber {
     }
 
     public static void main(String[] args) {
-        ComplexNumber z1 = new ComplexNumber(-14, 15);
+        ComplexNumber number = ComplexNumber.parse("5.5i");
+        System.out.println(ComplexNumber.parse("1+i"));
+        System.out.println(ComplexNumber.parse("i"));
+        System.out.println(ComplexNumber.parse("-i"));
+        System.out.println(ComplexNumber.parse("5.5i"));
+        System.out.println(ComplexNumber.parse("5.5"));
+        System.out.println(ComplexNumber.parse("1+5.5i"));
+        System.out.println(ComplexNumber.parse("1-5.5i"));
+        System.out.println(ComplexNumber.parse("-1+5.5i"));
+        System.out.println(ComplexNumber.parse("-1-5.5i"));
+        System.out.println(ComplexNumber.parse("-1"));
+        System.out.println(ComplexNumber.parse("-5.5i"));
+/*        ComplexNumber z1 = new ComplexNumber(-14, 15);
         ComplexNumber z2 = new ComplexNumber(0, 1);
+        ComplexNumber z3 = z1.minus();
+        System.out.println(z1);
+        System.out.println(z3);
+        System.out.println(z1.add(z3).equals(ComplexNumber.zero()));
+        System.out.println(z1);
+        System.out.println(z1.divide(ComplexNumber.one()));
+        System.out.println();
 
 //        System.out.println(z1.plus(z2));
 //        System.out.println(z1.multiply(z1));
@@ -106,6 +182,6 @@ public class ComplexNumber {
         System.out.println(new ComplexNumber(-2,2));
         System.out.println(new ComplexNumber(-1,-2));
         System.out.println(new ComplexNumber(-1,0));
-        System.out.println(new ComplexNumber(-1,2));
+        System.out.println(new ComplexNumber(-1,2));*/
     }
 }
