@@ -1283,16 +1283,13 @@ files:
         }
     }
   learner_created: true
+- name: src/solver/ComplexMatrixRow.java
+  visible: true
+  learner_created: true
 - name: src/solver/ComplexNumber.java
   visible: true
   learner_created: true
-- name: src/solver/NumericMatrixRow.java
-  visible: true
-  learner_created: true
-- name: src/solver/NumericElement.java
-  visible: true
-  learner_created: true
-- name: src/solver/CommonLinearEquation.java
+- name: src/solver/ComplexLinearEquation.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/projects/40/stages/213/implement

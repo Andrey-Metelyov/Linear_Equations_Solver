@@ -26,7 +26,7 @@ public class Main {
         int equations = scanner.nextInt();
         scanner.nextLine();
 //        int lines = Integer.parseInt(scanner.nextLine());
-        NumericMatrixRow<ComplexElement>[] rows = readMatrix(equations);
+        ComplexMatrixRow[] rows = readMatrix(equations);
         reader.close();
 
         System.out.println("variables=" + variables);
@@ -67,23 +67,23 @@ public class Main {
         System.out.println("Saved to file " + parameters.get("-out"));
     }
 
-    private static NumericMatrixRow<ComplexElement>[] readMatrix(int equations) {
-        NumericMatrixRow<ComplexElement>[] rows = new NumericMatrixRow[equations];
+    private static ComplexMatrixRow[] readMatrix(int equations) {
+        ComplexMatrixRow[] rows = new ComplexMatrixRow[equations];
 //        Matrix matrix = new Matrix(lines, lines + 1);
         for (int i = 0; i < equations; i++) {
             String[] line = scanner.nextLine().split("\\s+");
-            ComplexElement[] complexNumbers = new ComplexElement[line.length];
+            ComplexNumber[] complexNumbers = new ComplexNumber[line.length];
             for (int j = 0; j < line.length; j++) {
                 String s = line[j];
-                complexNumbers[j] = new ComplexElement(ComplexNumber.parse(s));
+                complexNumbers[j] = new ComplexNumber(ComplexNumber.parse(s));
             }
 //            matrix.setRow(i, line);
-            rows[i] = new NumericMatrixRow(complexNumbers);
+            rows[i] = new ComplexMatrixRow(complexNumbers);
         }
         return rows;
     }
 
-    private static LinearEquationResult solve(NumericMatrixRow<ComplexElement>[] rows, int variables, int equations) {
+    private static LinearEquationResult solve(ComplexMatrixRow[] rows, int variables, int equations) {
 /*        LinearEquation le = new LinearEquation(rows);
         System.out.println(le);
 //        if (equations < variables) {
