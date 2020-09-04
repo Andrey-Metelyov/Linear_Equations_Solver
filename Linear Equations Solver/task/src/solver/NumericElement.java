@@ -1,13 +1,15 @@
 package solver;
 
 public interface NumericElement<T> {
-    T add(T other);
-    T subtract(T other);
-    T multiply(T other);
-    T divide(T other);
+    NumericElement<T> add(NumericElement<T> other);
+    NumericElement<T> subtract(NumericElement<T> other);
+    NumericElement<T> multiply(NumericElement<T> other);
+    NumericElement<T> divide(NumericElement<T> other);
+
+//     add(NumericElement<T> other);
 }
 
-class ComplexElement implements NumericElement<ComplexElement> {
+class ComplexElement implements NumericElement<ComplexNumber> {
     private ComplexNumber value;
 
     public ComplexElement(ComplexNumber value) {
@@ -37,6 +39,15 @@ class ComplexElement implements NumericElement<ComplexElement> {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    public static void main(String[] args) {
+        ComplexElement el1 = new ComplexElement(ComplexNumber.parse("5.5+3i"));
+        ComplexElement el2 = new ComplexElement(ComplexNumber.parse("1.5+3i"));
+        ComplexElement el3 = el1.add(el2);
+        System.out.println(el1);
+        System.out.println(el2);
+        System.out.println(el3);
     }
 }
 

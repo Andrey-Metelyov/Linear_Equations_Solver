@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":Linear_Equations_Solver-task:main" external.linked.project.path="$MODULE_DIR$/../../../../Linear Equations Solver/task" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="Linear_Equations_Solver" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <output url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/out/production/classes" />
+    <output url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/build/classes/java/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/src">
       <sourceFolder url="file://$MODULE_DIR$/../../../../Linear Equations Solver/task/src" isTestSource="false" />

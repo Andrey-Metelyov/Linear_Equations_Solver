@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":Problems-Rotating_table:test" external.linked.project.path="$MODULE_DIR$/../../../../Problems/Rotating table" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="Linear_Equations_Solver" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":Problems-Frequency_of_characters:test" external.linked.project.path="$MODULE_DIR$/../../../../Problems/Frequency of characters" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="Linear_Equations_Solver" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <output-test url="file://$MODULE_DIR$/../../../../Problems/Rotating table/build/classes/java/test" />
+    <output-test url="file://$MODULE_DIR$/../../../../Problems/Frequency of characters/build/classes/java/test" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../../Problems/Rotating table/src/test" />
-    <content url="file://$MODULE_DIR$/../../../../Problems/Rotating table/test" />
+    <content url="file://$MODULE_DIR$/../../../../Problems/Frequency of characters/src/test" />
+    <content url="file://$MODULE_DIR$/../../../../Problems/Frequency of characters/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Linear_Equations_Solver.Problems-Rotating_table.main" />
+    <orderEntry type="module" module-name="Linear_Equations_Solver.Problems-Frequency_of_characters.main" />
     <orderEntry type="library" name="Gradle: com.github.hyperskill:hs-test:v7.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.github.stefanbirkner:system-rules:1.19.0" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
@@ -27,5 +27,5 @@
     <orderEntry type="library" name="Gradle: org.assertj:assertj-core:3.8.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.easytesting:fest-util:1.2.5" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="Linear_Equations_Solver.Problems-Rotating_table.main" />
+  <component name="TestModuleProperties" production-module="Linear_Equations_Solver.Problems-Frequency_of_characters.main" />
 </module>

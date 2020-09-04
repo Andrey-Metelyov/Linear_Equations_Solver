@@ -63,6 +63,14 @@ topics:
   2:
   - title: Units of information
     theory_id: 6865
+  - title: Introduction to matrices
+    theory_id: 7112
+  - title: Types of matrices
+    theory_id: 7285
+  - title: Row operations
+    theory_id: 8039
+  - title: Row echelon form
+    theory_id: 8050
   - title: IDE
     theory_id: 3805
   - title: What is an exception
@@ -71,6 +79,10 @@ topics:
     theory_id: 3570
   - title: Exception handling
     theory_id: 3552
+  - title: Matrix representation of systems of linear equations
+    theory_id: 9194
+  - title: Solving linear systems using the Gauss elimination
+    theory_id: 9205
   - title: Introduction to operating systems
     theory_id: 9704
   - title: Command line overview
@@ -83,18 +95,6 @@ topics:
     theory_id: 3636
   - title: Writing files
     theory_id: 3652
-  - title: Introduction to matrices
-    theory_id: 7112
-  - title: Types of matrices
-    theory_id: 7285
-  - title: Row operations
-    theory_id: 8039
-  - title: Row echelon form
-    theory_id: 8050
-  - title: Matrix representation of systems of linear equations
-    theory_id: 9194
-  - title: Solving linear systems using the Gauss elimination
-    theory_id: 9205
   - title: Sizes and ranges
     theory_id: 3532
   - title: Type casting
