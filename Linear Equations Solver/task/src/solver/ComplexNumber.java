@@ -182,4 +182,8 @@ public class ComplexNumber {
         }
         return sb.toString();
     }
+
+    public boolean isZero() {
+        return x == 0.0 && y == 0.0;
+    }
 }

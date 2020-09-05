@@ -6,7 +6,7 @@ public class ComplexMatrixRow {
     ComplexNumber[] elements;
 
     ComplexMatrixRow(ComplexNumber[] elements) {
-        this.elements = elements;
+        this.elements = this.elements = Arrays.copyOf(elements, elements.length);
     }
 
     public ComplexMatrixRow multiply(ComplexNumber value) {
@@ -18,9 +18,7 @@ public class ComplexMatrixRow {
 
     @Override
     public String toString() {
-        return "ComplexMatrixRow{" +
-                "elements=" + Arrays.toString(elements) +
-                "}\n";
+        return Arrays.toString(elements) + System.lineSeparator();
     }
 
     public static void main(String[] args) {
@@ -73,6 +71,15 @@ public class ComplexMatrixRow {
             this.elements[i] = this.elements[i].add(other.elements[i]);
         }
         return this;
+    }
+
+    public boolean nonZero() {
+        for (int i = 0; i < elements.length; i++) {
+            if (!elements[i].isZero()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

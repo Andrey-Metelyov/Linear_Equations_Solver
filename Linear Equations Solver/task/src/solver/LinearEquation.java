@@ -33,8 +33,8 @@ public class LinearEquation {
         return result;
     }
 
-    public double[] getLastColumn() {
-        double[] result = new double[rows.length];
+    public Double[] getLastColumn() {
+        Double[] result = new Double[rows.length];
         for (int i = 0; i < rows.length; i++) {
             result[i] = rows[i].get(rows[i].size() - 1);
         }

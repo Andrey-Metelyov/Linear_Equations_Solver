@@ -32,7 +32,7 @@ public class Main {
         System.out.println("variables=" + variables);
         System.out.println("equations=" + equations);
         System.out.println("matrix:\n" + Arrays.toString(rows));
-        if (true) return;
+//        if (true) return;
         System.out.println("Start solving the equation.");
 //        Matrix result = solve(matrix);
 //        sb.append("(" + result.getAt(0, 0));
@@ -44,8 +44,8 @@ public class Main {
 //        for (int i = 0; i < result.getRows(); i++) {
 //            writer.write(result.getAt(i, 0) + System.lineSeparator());
 //        }
-        LinearEquationResult linearEquationResult = solve(rows, variables, equations);
-        double[] result = linearEquationResult.result;
+        LinearEquationResult<ComplexNumber> linearEquationResult = solve(rows, variables, equations);
+        ComplexNumber[] result = linearEquationResult.result;
         StringBuilder sb = new StringBuilder();
         if (linearEquationResult.solvingResult == LinearEquationResult.SolvingResult.ONE_SOLUTION) {
             sb.append("(").append(result[0]);
@@ -83,7 +83,101 @@ public class Main {
         return rows;
     }
 
-    private static LinearEquationResult solve(ComplexMatrixRow[] rows, int variables, int equations) {
+    private static LinearEquationResult<ComplexNumber> solve(ComplexMatrixRow[] rows, int variables, int equations) {
+        ComplexLinearEquation le = new ComplexLinearEquation(rows);
+        System.out.println("Rows manipulation:");
+        int max = Math.min(variables, equations);
+        for (int i = 0; i < max; i++) {
+            ComplexNumber element = le.getElement(i, i);
+            if (element.equals(ComplexNumber.zero())) {
+                // swap rows
+                for (int j = i + 1; j < rows.length; j++) {
+                    if (!le.getElement(j, i).isZero()) {
+                        System.out.printf("R%d <-> R%d\n", i + 1, j + 1);
+                        le.swapRows(i, j);
+                        element = le.getElement(i, i);
+                        break;
+                    }
+                }
+                if (element.isZero()) {
+                    // swap columns
+                    for (int j = i + 1; j < le.getRow(i).size() - 1; j++) {
+                        if (!le.getElement(i, j).isZero()) {
+                            System.out.printf("C%d <-> C%d\n", i + 1, j + 1);
+                            le.swapColumns(i, j);
+                            element = le.getElement(i, i);
+                            break;
+                        }
+                    }
+                    if (element.isZero()) {
+                        System.out.println(le);
+                        if (rows[i].nonZero()) {
+                            System.out.println("No solutions (1)");
+                            return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
+                        } else {
+                            System.out.println("Infinitely many solutions (1)");
+                            return new LinearEquationResult(LinearEquationResult.SolvingResult.INFINITELY_MANY_SOLUTIONS, null);
+                        }
+                    }
+                }
+            }
+            if (!element.equals(ComplexNumber.one())) {
+                System.out.printf("%s * R%d -> R%d\n", ComplexNumber.one().divide(element), i + 1, i + 1);
+                le.multiplyRow(i, ComplexNumber.one().divide(element));
+                System.out.println(le);
+            }
+            for (int j = i + 1; j < rows.length; j++) {
+                if (!le.getElement(j, i).isZero()) {
+                    ComplexNumber coef = le.getElement(j, i).minus();
+                    System.out.printf("1. %s * R%d + R%d -> R%d\n", coef, i + 1, j + 1, j + 1);
+                    System.out.println(le);
+                    le.addRowWithCoef(j, i, coef);
+                    if (le.isBadRow(j)) {
+                        return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
+                    }
+                    System.out.println(le);
+                }
+            }
+            System.out.println(le);
+        }
+
+        System.out.println(le);
+        for (int i = variables - 1; i < rows.length; i++) {
+            boolean allZeroes = true;
+            for (int j = 0; j < rows[i].size() - 1; j++) {
+                if (!rows[i].get(j).isZero()) {
+                    allZeroes = false;
+                    break;
+                }
+            }
+            if (allZeroes && !rows[i].get(rows[i].size() - 1).isZero()) {
+                System.out.println("No solutions (2)");
+                return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
+            }
+        }
+
+        int nonZeroRows = 0;
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i].nonZero()) {
+                nonZeroRows++;
+            }
+        }
+        if (nonZeroRows < variables) {
+            System.out.println("Infinitely many solutions");
+            return new LinearEquationResult(LinearEquationResult.SolvingResult.INFINITELY_MANY_SOLUTIONS, null);
+        }
+
+        for (int i = rows.length - 2; i >= 0; i--) {
+            for (int j = i; j >= 0; j--) {
+                ComplexNumber coef = le.getElement(j, i + 1).minus();
+                System.out.printf("2. %s * R%d + R%d -> R%d\n", coef, i + 2, j + 1, j + 1);
+                le.addRowWithCoef(j, i + 1, coef);
+//                System.out.println(le);
+            }
+        }
+        System.out.println(le);
+        return new LinearEquationResult<ComplexNumber>(LinearEquationResult.SolvingResult.ONE_SOLUTION, le.getLastColumn());
+
 /*        LinearEquation le = new LinearEquation(rows);
         System.out.println(le);
 //        if (equations < variables) {
@@ -178,10 +272,9 @@ public class Main {
         }
         System.out.println(le);
         return new LinearEquationResult(LinearEquationResult.SolvingResult.ONE_SOLUTION, le.getLastColumn());*/
-        return new LinearEquationResult(LinearEquationResult.SolvingResult.NO_SOLUTIONS, null);
     }
 
-    private static LinearEquationResult solve(MatrixRow[] rows, int variables, int equations) {
+    private static LinearEquationResult<Double> solve(MatrixRow[] rows, int variables, int equations) {
         LinearEquation le = new LinearEquation(rows);
         System.out.println(le);
 //        if (equations < variables) {
@@ -275,7 +368,7 @@ public class Main {
             }
         }
         System.out.println(le);
-        return new LinearEquationResult(LinearEquationResult.SolvingResult.ONE_SOLUTION, le.getLastColumn());
+        return new LinearEquationResult<Double>(LinearEquationResult.SolvingResult.ONE_SOLUTION, le.getLastColumn());
     }
 
     private static Matrix solve(Matrix matrix) {
